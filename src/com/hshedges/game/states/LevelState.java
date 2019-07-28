@@ -2,6 +2,7 @@ package com.hshedges.game.states;
 
 import com.hshedges.game.entities.Player;
 import com.hshedges.game.main.GamePanel;
+import com.hshedges.game.main.Images;
 import com.hshedges.game.objects.Block;
 import com.hshedges.game.objects.Map;
 
@@ -21,10 +22,10 @@ public class LevelState extends GameState {
 
     @Override
     public void init() {
-        player = new Player(30,30);
-        this.map = new Map("/lvl1.map",4,4);
-        GameState.yOffset = -GamePanel.HEIGHT/2 - 60;
-        GameState.xOffset = -GamePanel.WIDTH/2 + 60;
+        player = new Player(64,64);
+        this.map = new Map("/maps/lvl1.map",4,4);
+        GameState.yOffset = -GamePanel.HEIGHT/2 - 128;
+        GameState.xOffset = -GamePanel.WIDTH/2 + 128;
 
 
 
@@ -40,8 +41,11 @@ public class LevelState extends GameState {
 
     @Override
     public void draw(Graphics g) {
-        player.drawPlayer(g);
+        g.setColor(new Color(95, 176, 255));
+        //g.fillRect(0,0,GamePanel.WIDTH,GamePanel.HEIGHT);
+        Images.drawBackground(g);
         map.draw(g);
+        player.drawPlayer(g);
 
     }
 

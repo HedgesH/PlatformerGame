@@ -1,0 +1,24 @@
+10
+4
+8 10 10 10 6 5 7 10 6 7
+2 7 9 9 9 9 9 9 2 3
+2 9 9 6 7 9 9 9 9 13
+0 6 5 1 1 5 5 5 5 7
+
+
+1 - interior
+2 - interiorLeft
+3 - interiorRight
+4 - interiorSingle
+5 - grassMiddle
+6 - grassLeft
+7 - grassRight
+8 - grassSingle
+9 - cave
+10 - caveTop
+11 - caveBottom
+12 - caveLeft
+13 - caveRight
+
+
+

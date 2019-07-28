@@ -31,6 +31,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         isRunning = true;
         thread = new Thread(this);
         thread.start();
+        new Images();
         addKeyListener(this);
 
         //TODO; what does this do?

@@ -1,5 +1,6 @@
 package com.hshedges.game.objects;
 
+import com.hshedges.game.main.Images;
 import com.hshedges.game.states.GameState;
 
 import java.awt.*;
@@ -7,8 +8,8 @@ import java.awt.*;
 public class Block extends Rectangle {
     public int x,y;
     public int id;
-    public static final int WIDTH = 64;
-    public static final int HEIGHT = 64;
+    public static final int WIDTH = 128;
+    public static final int HEIGHT = 128;
 
     public Block(int x, int y, int id){
         setBounds(x,y,WIDTH,HEIGHT);
@@ -20,6 +21,8 @@ public class Block extends Rectangle {
     public void drawBlock(Graphics g){
         int xOff = (int)GameState.xOffset;
         int yOff = (int)GameState.yOffset;
-        if(id != 0) g.fillRect(x - xOff ,y - yOff ,WIDTH,HEIGHT);
+        if(id != 0){
+            g.drawImage(Images.blocks[id-1],x - xOff ,y - yOff ,WIDTH,HEIGHT,null);
+        }
     }
 }

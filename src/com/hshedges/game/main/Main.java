@@ -23,4 +23,15 @@ public class Main  {
         frame.setVisible(true);
 
     }
+
+    //TODO: help screen
+    //TODO: pause screen
+    //TODO: moving block
+    //TODO: tangible block
+    //TODO: enemy block
+    //TODO: 3 levels
+    //TODO: timer
+    //TODO: coins
+    //TODO: design UI
+
 }
