@@ -10,9 +10,9 @@ public class MainMenuState extends GameState {
     private static final String[] options = {"Start","Help","Exit"};
     private int currentSelection;
 
-    private static final int FONT_SIZE = 72;
-    private static final int OFFSET = 0;
-    private static final int SEPARATION = GamePanel.HEIGHT /4;
+    public static final int FONT_SIZE = 72;
+    public static final int OFFSET = 0;
+    public static final int SEPARATION = GamePanel.HEIGHT /4;
 
     public MainMenuState(GameStateManager gsm){
         super(gsm);
@@ -27,6 +27,7 @@ public class MainMenuState extends GameState {
 
     @Override
     public void tick() {
+
 
     }
 
@@ -76,16 +77,17 @@ public class MainMenuState extends GameState {
 
     public void enterPressed(){
 
+
         switch (currentSelection){
 
             //play
-            case 0: gsm.states.push(new LevelState(gsm));
+            case 0: {gsm.states.push(new LevelState(gsm)); break;}
 
             //help
-            case 1: return;
+            case 1: {gsm.states.push(new HelpState(gsm)); break;}
 
             //exit
-            case 2: System.exit(0);
+            case 2: {System.exit(0); break;}
 
         }
 

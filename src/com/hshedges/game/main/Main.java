@@ -24,10 +24,6 @@ public class Main  {
 
     }
 
-    //TODO: help screen
-    //TODO: pause screen
-    //TODO: moving block
-    //TODO: tangible block
     //TODO: enemy block
     //TODO: 3 levels
     //TODO: timer

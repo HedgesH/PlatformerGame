@@ -3,6 +3,7 @@ package com.hshedges.game.entities;
 import com.hshedges.game.main.GamePanel;
 import com.hshedges.game.main.Images;
 import com.hshedges.game.objects.Block;
+import com.hshedges.game.objects.MovingBlock;
 import com.hshedges.game.physics.Collisions;
 import com.hshedges.game.states.GameState;
 
@@ -37,7 +38,7 @@ public class Player extends Rectangle {
 
 
     public Player(int w ,int h){
-        setBounds(GamePanel.WIDTH/2,GamePanel.HEIGHT/2,width,height);
+        setBounds(GamePanel.WIDTH/2 + 15,GamePanel.HEIGHT/2 + 8,width - 28,height - 10);
         this.posX = GamePanel.WIDTH/2;
         this.posY = GamePanel.HEIGHT/2;
         this.width = w;
@@ -52,7 +53,7 @@ public class Player extends Rectangle {
     }
 
 
-    public void tick(Block[][] blocks) {
+    public void tick(Block[][] blocks,MovingBlock[] mblocks) {
 
 
 
@@ -69,53 +70,32 @@ public class Player extends Rectangle {
 
         }
 
+        int collideCounter = 0;
+
         for (int i = 0; i < blocks.length ; i++) {
             for (int j = 0; j < blocks[0].length ; j++) {
 
                 Block b = blocks[i][j];
-                if(b.id == 0 || b.id == 9
-                        || b.id == 10
-                        || b.id == 11
-                        || b.id == 12
-                        || b.id == 13) continue;
-
-
-
-                int rightPos = posX + width + (int)GameState.xOffset;
-                int leftPos = posX + (int)GameState.xOffset;
-                int downPos = posY + height + (int)GameState.yOffset ;
-                int upPos = posY + (int)GameState.yOffset;
-
-                //right
-                if(Collisions.playerBlock2(rightPos , upPos + 1,b)
-                        || Collisions.playerBlock2(rightPos,  downPos - 1,b)) right = false;
-                //left
-                if(Collisions.playerBlock2(leftPos, upPos + 1,b)
-                        || Collisions.playerBlock2(leftPos , downPos - 1,b)) left = false;
-
-                //up
-                if(Collisions.playerBlock2(leftPos + 1, upPos,b)
-                        || Collisions.playerBlock2(rightPos - 1, upPos,b)){
-                    currentJumpSpeed = GRAVITY;
-                }
-                //down
-                if(Collisions.playerBlock2(rightPos - 1 , downPos,b)
-                        || Collisions.playerBlock2(leftPos + 1, downPos ,b)){
-                    currentJumpSpeed = 0;
-                    jumping = false;
-                    falling = false;
-
-                }
-                else falling = true;
-
-
-
-
-
+                collideCounter += playerCollision(b,false);
 
             }
 
         }
+        boolean collisions = false;
+        if(collideCounter >= 1) collisions = true;
+
+        for (MovingBlock b: mblocks) {
+            int temp =playerCollision(b,collisions);
+           // System.out.println(temp + " " + collideCounter);
+            if( temp >= 1 && collideCounter >=1){
+                b.currentSpeed = 0;
+            }
+            else b.currentSpeed = SPEED;
+
+
+        }
+
+
 
         long time = System.nanoTime();
         if((time - start) / 1_000_000 > targetTime){
@@ -127,9 +107,86 @@ public class Player extends Rectangle {
 
     }
 
+    public int playerCollision(Block b, boolean collision){
+
+        int collideCounter = 0;
+
+        if(b.id == 0 || b.id == 9
+                || b.id == 10
+                || b.id == 11
+                || b.id == 12
+                || b.id == 13) return 0;
+
+        setBounds(GamePanel.WIDTH/2 + 15,GamePanel.HEIGHT/2 + 8,width - 28,height - 10);
+        int rightPos = posX + 15 + width - 28 + (int)GameState.xOffset;
+        int leftPos = posX + 15 + (int)GameState.xOffset;
+        int downPos = posY + 8 + height - 10 + (int)GameState.yOffset ;
+        int upPos = posY + 8 + (int)GameState.yOffset;
+
+        //right
+        if(Collisions.playerBlock2(rightPos , upPos + 1,b)
+                || Collisions.playerBlock2(rightPos,  downPos - 1,b)){
+            right = false;
+            collideCounter++;
+            if(b instanceof MovingBlock){
+                if(!collision) GameState.xOffset -= 1;
+            }
+        }
+        //left
+        if(Collisions.playerBlock2(leftPos, upPos + 1,b)
+                || Collisions.playerBlock2(leftPos , downPos - 1,b)){
+            left = false;
+            collideCounter++;
+            if(b instanceof MovingBlock){
+                if(!collision) GameState.xOffset += 1;
+            }
+        }
+
+        //up
+        if(Collisions.playerBlock2(leftPos + 1, upPos,b)
+                || Collisions.playerBlock2(rightPos - 1, upPos,b)){
+            currentJumpSpeed = GRAVITY;
+            collideCounter++;
+            if(b instanceof MovingBlock){
+                if(!collision) GameState.yOffset += 1;
+            }
+        }
+        //down
+        if(Collisions.playerBlock2(rightPos - 1 , downPos,b)
+                || Collisions.playerBlock2(leftPos + 1, downPos ,b)){
+            currentJumpSpeed = 0;
+            jumping = false;
+            falling = false;
+            collideCounter++;
+            if(b instanceof MovingBlock){
+                if(!collision) GameState.yOffset -= 1;
+                ((MovingBlock) b).offset = true;
+            }
+
+        }
+        else{
+            falling = true;
+            if(b instanceof MovingBlock){
+                if(!Collisions.playerBlock2(rightPos - 1 , downPos + 1,b)
+                        || !Collisions.playerBlock2(leftPos + 1, downPos + 1 ,b)){
+                    ((MovingBlock) b).offset = false;
+
+                }
+
+            }
+
+
+
+        }
+
+        return collideCounter;
+
+
+    }
+
     public void drawPlayer(Graphics g) {
-        g.setColor(new Color(0,0,0));
-        g.drawRect(GamePanel.WIDTH/2,GamePanel.HEIGHT/2,width,height);
+//        g.setColor(new Color(0,0,0));
+//        g.drawRect(GamePanel.WIDTH/2 + 15,GamePanel.HEIGHT/2 + 8,width - 28,height - 10);
 
         if(right){
             g.drawImage(Images.playerRunRight[aniStage],GamePanel.WIDTH/2,GamePanel.HEIGHT/2,width,height,null);

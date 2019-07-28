@@ -8,9 +8,10 @@ import java.io.InputStreamReader;
 public class Map {
 
     private String path;
-    private int height,width;
+    private int height,width,movingbs;
 
     public Block[][] blocks;
+    public MovingBlock[] movingBlocks;
 
     public Map(String filePath, int height, int width){
 
@@ -28,8 +29,10 @@ public class Map {
         try{
             width = Integer.parseInt(br.readLine());
             height = Integer.parseInt(br.readLine());
+            movingbs = Integer.parseInt(br.readLine());
 
             blocks = new Block[height][width];
+            movingBlocks = new MovingBlock[movingbs];
 
 
 
@@ -45,12 +48,30 @@ public class Map {
                 
             }
 
+            for (int i = 0; i < movingbs; i++) {
+                String line = br.readLine();
+                String[] split = line.split(" ");
+                MovingBlock mb = new MovingBlock(Integer.parseInt(split[0]),Integer.parseInt(split[1]),
+                        Integer.parseInt(split[2]),Integer.parseInt(split[3]),Integer.parseInt(split[4]));
+                movingBlocks[i] = mb;
+
+
+            }
+
         }
         catch (Exception e){
             e.printStackTrace();
         }
 
 
+
+    }
+
+    public void tick(){
+        for (MovingBlock mb:movingBlocks) {
+            mb.tick();
+
+        }
 
     }
 
@@ -63,5 +84,9 @@ public class Map {
             }
             
         }
+        for (MovingBlock mb:movingBlocks) {
+            mb.drawBlock(g);
+        }
+
     }
 }

@@ -7,6 +7,7 @@ import com.hshedges.game.objects.Block;
 import com.hshedges.game.objects.Map;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class LevelState extends GameState {
 
@@ -35,7 +36,8 @@ public class LevelState extends GameState {
 
     @Override
     public void tick() {
-        player.tick(map.blocks);
+        player.tick(map.blocks,map.movingBlocks);
+        map.tick();
 
     }
 
@@ -52,6 +54,7 @@ public class LevelState extends GameState {
     @Override
     public void keyPressed(int k) {
         player.keyPressed(k);
+        if(k == KeyEvent.VK_ESCAPE) gsm.states.pop();
 
     }
 
