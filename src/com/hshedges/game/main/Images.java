@@ -12,6 +12,7 @@ public class Images {
     public static BufferedImage[] playerRunRight;
     public static BufferedImage[] playerRunLeft;
     public static BufferedImage playerIdle;
+    public static BufferedImage life;
 
     public Images(){
         blocks = new BufferedImage[13];
@@ -23,6 +24,7 @@ public class Images {
         loadBackground();
         loadPlayerRun();
         loadPlayer();
+        loadLife();
 
 
 
@@ -99,6 +101,19 @@ public class Images {
         try{
 
             playerIdle = ImageIO.read(getClass().getResourceAsStream("/assets/player/PlayerIdle.tiff"));
+
+        }
+        catch (IOException e){
+            e.printStackTrace();
+
+        }
+
+    }
+
+    public void loadLife(){
+        try{
+
+            life = ImageIO.read(getClass().getResourceAsStream("/assets/life/heart.png"));
 
         }
         catch (IOException e){

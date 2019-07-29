@@ -26,8 +26,11 @@ public class Main  {
 
     //TODO: enemy block
     //TODO: 3 levels
-    //TODO: timer
-    //TODO: coins
+    //TODO: level complete
+    //TODO: Goal block
     //TODO: design UI
+    //TODO: more backgrounds
+    //TODO: stops running when lands
+    //TODO: put on app store
 
 }

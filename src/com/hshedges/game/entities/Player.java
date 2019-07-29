@@ -17,18 +17,20 @@ public class Player extends Rectangle {
     int posY;
 
     //jumping
-    public static final double JUMP_SPEED = -0.0012;
-    public static final double MAX_FALL_SPEED = 0.0005;
-    public static final double GRAVITY = 0.000000004;
+    public static final double JUMP_SPEED = -15;
+    public static final double MAX_FALL_SPEED = 15;
+    public static final double GRAVITY = 0.5;
     public boolean jumping;
     public boolean falling;
     public double currentJumpSpeed;
 
 
     //movement
-    public static final double SPEED = 0.001;
+    public static final double SPEED = 10;
     public boolean right;
     public boolean left;
+    public boolean noleft;
+    public boolean noright;
 
     //movement animation
     public int aniStage;
@@ -50,17 +52,12 @@ public class Player extends Rectangle {
         this.currentJumpSpeed = 0;
         this.aniStage = 0;
         this.start = System.nanoTime();
+        this.noleft = false;
+        this.noright = false;
     }
 
 
     public void tick(Block[][] blocks,MovingBlock[] mblocks) {
-
-
-
-
-        if(right) GameState.xOffset += SPEED;
-
-        if(left) GameState.xOffset -= SPEED;
 
         if(jumping || falling){
             GameState.yOffset += currentJumpSpeed;
@@ -69,6 +66,10 @@ public class Player extends Rectangle {
 
 
         }
+
+        if(right) GameState.xOffset += SPEED;
+
+        if(left) GameState.xOffset -= SPEED;
 
         int collideCounter = 0;
 
@@ -105,11 +106,17 @@ public class Player extends Rectangle {
 
 
 
+
+
+
+
+
     }
 
     public int playerCollision(Block b, boolean collision){
 
         int collideCounter = 0;
+        int ec = 1;
 
         if(b.id == 0 || b.id == 9
                 || b.id == 10
@@ -124,42 +131,60 @@ public class Player extends Rectangle {
         int upPos = posY + 8 + (int)GameState.yOffset;
 
         //right
-        if(Collisions.playerBlock2(rightPos , upPos + 1,b)
-                || Collisions.playerBlock2(rightPos,  downPos - 1,b)){
+        if(Collisions.playerBlock2(rightPos + ec , upPos + ec,b)
+                || Collisions.playerBlock2(rightPos + ec,  downPos - ec,b)){
             right = false;
             collideCounter++;
+            GameState.xOffset -= SPEED;
+            rightPos = posX + 15 + width - 28 + (int)GameState.xOffset;
+
+
+
             if(b instanceof MovingBlock){
                 if(!collision) GameState.xOffset -= 1;
             }
         }
         //left
-        if(Collisions.playerBlock2(leftPos, upPos + 1,b)
-                || Collisions.playerBlock2(leftPos , downPos - 1,b)){
+        if(Collisions.playerBlock2(leftPos -ec, upPos + ec,b)
+                || Collisions.playerBlock2(leftPos - ec , downPos - ec,b)){
             left = false;
+
             collideCounter++;
+            GameState.xOffset += SPEED;
+            leftPos = posX + 15 + (int)GameState.xOffset;
             if(b instanceof MovingBlock){
                 if(!collision) GameState.xOffset += 1;
             }
         }
 
         //up
-        if(Collisions.playerBlock2(leftPos + 1, upPos,b)
-                || Collisions.playerBlock2(rightPos - 1, upPos,b)){
+        if(Collisions.playerBlock2(leftPos + ec , upPos - ec,b)
+                || Collisions.playerBlock2(rightPos - ec, upPos - ec,b)){
+
             currentJumpSpeed = GRAVITY;
-            collideCounter++;
+            int offset =(int)b.y + b.height - upPos + ec;
+            upPos = posY + 8 + (int)GameState.yOffset;
+            if(jumping)GameState.yOffset += offset;
+
+
             if(b instanceof MovingBlock){
                 if(!collision) GameState.yOffset += 1;
             }
+
         }
         //down
-        if(Collisions.playerBlock2(rightPos - 1 , downPos,b)
-                || Collisions.playerBlock2(leftPos + 1, downPos ,b)){
+        if(Collisions.playerBlock2(rightPos - ec  , downPos + ec,b)
+                || Collisions.playerBlock2(leftPos + ec , downPos + ec ,b)){
+            if(falling) GameState.yOffset -= downPos + ec -  ((int)b.y );
+            downPos = posY + 8 + height - 10 + (int)GameState.yOffset ;
             currentJumpSpeed = 0;
             jumping = false;
             falling = false;
             collideCounter++;
+
+
             if(b instanceof MovingBlock){
-                if(!collision) GameState.yOffset -= 1;
+                //if(!collision) GameState.yOffset -= 1;
                 ((MovingBlock) b).offset = true;
             }
 
@@ -167,8 +192,8 @@ public class Player extends Rectangle {
         else{
             falling = true;
             if(b instanceof MovingBlock){
-                if(!Collisions.playerBlock2(rightPos - 1 , downPos + 1,b)
-                        || !Collisions.playerBlock2(leftPos + 1, downPos + 1 ,b)){
+                if(!Collisions.playerBlock2(rightPos - ec , downPos + ec,b)
+                        || !Collisions.playerBlock2(leftPos + ec, downPos + ec ,b)){
                     ((MovingBlock) b).offset = false;
 
                 }
@@ -203,10 +228,11 @@ public class Player extends Rectangle {
 
 
 
-        if(k == KeyEvent.VK_D){
+        if(k == KeyEvent.VK_D ){
             right = true;
+            noleft = false;
         }
-        if(k == KeyEvent.VK_A) left = true;
+        if(k == KeyEvent.VK_A ){ left = true; }
 
         if(k == KeyEvent.VK_SPACE && !jumping) {
             jumping = true;

@@ -1,5 +1,7 @@
 package com.hshedges.game.states;
 
+import com.hshedges.game.UI.Lives;
+import com.hshedges.game.UI.Timer;
 import com.hshedges.game.entities.Player;
 import com.hshedges.game.main.GamePanel;
 import com.hshedges.game.main.Images;
@@ -14,6 +16,8 @@ public class LevelState extends GameState {
     private Player player;
     private Block[][] blocks;
     private Map map;
+    private Lives lives;
+    private Timer timer;
 
     public LevelState(GameStateManager gsm){
         super(gsm);
@@ -27,6 +31,8 @@ public class LevelState extends GameState {
         this.map = new Map("/maps/lvl1.map",4,4);
         GameState.yOffset = -GamePanel.HEIGHT/2 - 128;
         GameState.xOffset = -GamePanel.WIDTH/2 + 128;
+        lives = new Lives(GamePanel.WIDTH/32,GamePanel.HEIGHT/16,GamePanel.WIDTH/40,GamePanel.WIDTH/40);
+        timer = new Timer(GamePanel.WIDTH/32,GamePanel.HEIGHT/32);
 
 
 
@@ -38,6 +44,8 @@ public class LevelState extends GameState {
     public void tick() {
         player.tick(map.blocks,map.movingBlocks);
         map.tick();
+        lives.tick(false);
+        timer.tick();
 
     }
 
@@ -48,6 +56,8 @@ public class LevelState extends GameState {
         Images.drawBackground(g);
         map.draw(g);
         player.drawPlayer(g);
+        lives.drawLives(g);
+        timer.drawTimer(g);
 
     }
 

@@ -5,7 +5,7 @@ import com.hshedges.game.states.GameState;
 public class MovingBlock extends Block {
 
     private double startX,startY,finalX,finalY;
-    private static final double SPEED = 0.0000000001;
+    private static final double SPEED = 1;
     public double currentSpeed;
     private boolean ret;
     public boolean offset;
@@ -49,7 +49,7 @@ public class MovingBlock extends Block {
         double yy1 = finalY - y;
         double xx2 = startX - x;
         double yy2 = startY - y;
-        if((xx1*xx1 + yy1*yy1 < 1) || ((xx2*xx2 + yy2*yy2 < 1) && ret) ){
+        if((xx1*xx1 + yy1*yy1 < 10) || ((xx2*xx2 + yy2*yy2 < 10) && ret) ){
             ret = !ret;
         }
 

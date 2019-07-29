@@ -16,7 +16,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private boolean isRunning = false;
 
     private static final int FPS = 30;
-    private static final int targetTime = 1000/FPS;
+    public static final int targetTime = 1000/FPS;
 
     private GameStateManager gsm;
 
@@ -46,15 +46,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
         while (isRunning){
 
-            start = System.nanoTime();
+            start = System.currentTimeMillis();
 
             tick();
             repaint();
 
-            elapsed = System.nanoTime() - start;
-            wait = (targetTime - elapsed) / 1_000_000;
+            elapsed = System.currentTimeMillis() - start;
+            wait = (targetTime - elapsed) ;
 
-            if(wait < 0) wait = 5;
+            if(wait < 0) wait = targetTime;
 
             try{ Thread.sleep(wait); }
             catch(Exception e){ e.printStackTrace(); }
