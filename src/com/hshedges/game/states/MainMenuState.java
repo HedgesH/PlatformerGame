@@ -4,11 +4,16 @@ import com.hshedges.game.main.GamePanel;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Random;
 
 public class MainMenuState extends GameState {
 
     private static final String[] options = {"Start","Help","Exit"};
     private int currentSelection;
+
+    //menu graphic
+    private static final int SIZE = 250;
+    private int counter;
 
     public static final int FONT_SIZE = 72;
     public static final int OFFSET = 0;
@@ -17,6 +22,8 @@ public class MainMenuState extends GameState {
     public MainMenuState(GameStateManager gsm){
         super(gsm);
         currentSelection = 0;
+        this.counter = 0;
+
 
     }
 
@@ -36,8 +43,20 @@ public class MainMenuState extends GameState {
 
         int counter = 1;
 
-        g.setColor(new Color(221, 166, 187));
+        g.setColor(new Color(255, 251, 255));
         g.fillRect(0,0,GamePanel.WIDTH,GamePanel.HEIGHT);
+
+        g.setColor(new Color(0,0,0));
+        for (int i = 0; i < GamePanel.WIDTH ; i+= GamePanel.WIDTH/SIZE) {
+            g.drawLine(i,0,i,GamePanel.HEIGHT);
+
+        }
+        for (int i = 0; i < GamePanel.HEIGHT ; i+= GamePanel.HEIGHT/SIZE) {
+            g.drawLine(0,i,GamePanel.WIDTH,i);
+
+        }
+
+        drawGrid(g);
 
 
         for (String s: options) {
@@ -51,9 +70,28 @@ public class MainMenuState extends GameState {
 
 
             g.setFont(new Font("Garamond",Font.BOLD,FONT_SIZE));
-            g.drawString(s, GamePanel.WIDTH/2 - (FONT_SIZE), (SEPARATION * counter) + OFFSET);
+            g.drawString(s, (3*GamePanel.WIDTH/4) - (FONT_SIZE), (SEPARATION * counter) + OFFSET);
             counter++;
         }
+
+    }
+
+    public void drawGrid(Graphics g){
+        int dx = GamePanel.WIDTH / SIZE;
+        int dy = GamePanel.HEIGHT / SIZE;
+        for (int i = 0; i < GamePanel.WIDTH ; i+= GamePanel.WIDTH/SIZE) {
+            for (int j = 0; j < GamePanel.HEIGHT ; j+= GamePanel.HEIGHT/SIZE) {
+
+                g.setColor(new Color((i + (j + counter) % 100) % 255,255,((i + j ) + (counter)) % 255));
+
+                g.fillRect(i,j,dx,dy);
+
+
+
+            }
+        }
+        if(counter == 1000) counter = 0;
+        else counter+= 10;
 
     }
 

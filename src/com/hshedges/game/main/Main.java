@@ -24,9 +24,4 @@ public class Main  {
 
     }
 
-    //TODO: design UI
-    //TODO: stops running when lands
-    //TODO: sound
-    //TODO: put on android app store
-
 }
