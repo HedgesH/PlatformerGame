@@ -47,6 +47,9 @@ public class Player extends Rectangle {
     //map
     Map map;
 
+    //level complete
+    public boolean levelComplete;
+
 
     public Player(int w ,int h, Map map){
         setBounds(GamePanel.WIDTH/2 + 15,GamePanel.HEIGHT/2 + 8,width - 28,height - 10);
@@ -66,6 +69,7 @@ public class Player extends Rectangle {
         this.damaged = false;
         this.lives = START_LIVES;
         this.map = map;
+        this.levelComplete = false;
     }
 
 
@@ -118,9 +122,16 @@ public class Player extends Rectangle {
 
         for (MovingBlock b: mblocks) {
             int temp =playerCollision(b,collisions);
-           // System.out.println(temp + " " + collideCounter);
-            if( temp >= 1 && collideCounter >=1){
-                b.currentSpeed = 0;
+
+            //if(temp > 0) System.out.println(temp + " " + collideCounter);
+
+            boolean colliding1 = temp >= 100 && collideCounter >= 100;
+            boolean colliding2 = (temp % 10 == 1) && ((collideCounter/10)%10 == 1);
+
+
+            if( colliding1 || colliding2 ){
+                //b.currentSpeed = 0;
+                damaged = true;
             }
             else b.currentSpeed = SPEED;
 
@@ -180,13 +191,14 @@ public class Player extends Rectangle {
             }
 
             if(b.isDamageBlock()) damaged = true;
+            if(b.isGoalBlock()) levelComplete = true;
         }
         //left
         if(Collisions.playerBlock2(leftPos -ec, upPos + ec,b)
                 || Collisions.playerBlock2(leftPos - ec , downPos - ec,b)){
             left = false;
 
-            collideCounter++;
+            collideCounter+=10;
             GameState.xOffset += SPEED;
             leftPos = posX + 15 + (int)GameState.xOffset;
             if(b instanceof MovingBlock){
@@ -194,6 +206,7 @@ public class Player extends Rectangle {
             }
 
             if(b.isDamageBlock()) damaged = true;
+            if(b.isGoalBlock()) levelComplete = true;
         }
 
         //up
@@ -204,6 +217,7 @@ public class Player extends Rectangle {
             int offset =(int)b.y + b.height - upPos + ec;
             upPos = posY + 8 + (int)GameState.yOffset;
             if(jumping)GameState.yOffset += offset;
+            collideCounter += 100;
 
 
             if(b instanceof MovingBlock){
@@ -211,6 +225,7 @@ public class Player extends Rectangle {
             }
 
             if(b.isDamageBlock()) damaged = true;
+            if(b.isGoalBlock()) levelComplete = true;
 
         }
         //down
@@ -221,7 +236,7 @@ public class Player extends Rectangle {
             currentJumpSpeed = 0;
             jumping = false;
             falling = false;
-            collideCounter++;
+            collideCounter += 1000;
 
 
             if(b instanceof MovingBlock){
@@ -230,6 +245,7 @@ public class Player extends Rectangle {
             }
 
             if(b.isDamageBlock()) damaged = true;
+            if(b.isGoalBlock()) levelComplete = true;
 
         }
         else{
@@ -257,7 +273,7 @@ public class Player extends Rectangle {
 //        g.drawRect(GamePanel.WIDTH/2 + 15,GamePanel.HEIGHT/2 + 8,width - 28,height - 10);
 
         //TODO: injured animation
-        if(damaged) g.drawImage(Images.playerIdle,posX,posY,width,height,null);
+        if(damaged || levelComplete) g.drawImage(Images.playerIdle,posX,posY,width,height,null);
         else if(right){ g.drawImage(Images.playerRunRight[aniStage],posX,posY,width,height,null); }
         else if(left){ g.drawImage(Images.playerRunLeft[aniStage],posX,posY,width,height,null); }
         else g.drawImage(Images.playerIdle,posX,posY,width,height,null);

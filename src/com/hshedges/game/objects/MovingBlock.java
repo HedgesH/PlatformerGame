@@ -29,6 +29,7 @@ public class MovingBlock extends Block {
 
 
     public void tick(){
+        //System.out.println(x + " " + finalX );
         double dy = finalY - startY;
         double dx = finalX - startX;
         double angle = Math.atan(dy/dx);
@@ -49,9 +50,11 @@ public class MovingBlock extends Block {
         double yy1 = finalY - y;
         double xx2 = startX - x;
         double yy2 = startY - y;
-        if((xx1*xx1 + yy1*yy1 < 10) || ((xx2*xx2 + yy2*yy2 < 10) && ret) ){
-            ret = !ret;
-        }
+        if(x >= finalX && y >= finalY && !ret) ret = !ret;
+        else if( x <= startX && y <= startY && ret) ret = !ret;
+//        if((xx1*xx1 + yy1*yy1 < 10) || ((xx2*xx2 + yy2*yy2 < 10) && ret) ){
+//            ret = !ret;
+//        }
 
         setBounds((int)x,(int)y,WIDTH,HEIGHT);
 

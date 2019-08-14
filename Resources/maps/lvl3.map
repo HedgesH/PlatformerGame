@@ -1,0 +1,35 @@
+20
+6
+0
+1 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 15
+1 1 10 1 1 1 1 1 1 1 10 10 10 1 1 1 10 10 1 15
+1 9 9 1 9 9 9 9 9 9 9 9 9 9 9 9 9 1 1 15
+1 9 1 1 9 9 1 1 9 9 9 9 9 9 9 9 1 1 1 15
+1 9 9 9 9 1 1 9 9 1 9 1 9 9 1 9 9 1 9 15
+1 1 1 1 1 1 1 1 1 0 1 0 0 0 0 1 1 1 0 15
+
+
+
+etc
+-- first line is width
+-- second line is height
+-- third line number of moving blocks
+-- input map
+-- next lines are the moving blocks two coordinates (row1 col1 row2 col2 id)
+
+0 - air
+1 - interior
+2 - interiorLeft
+3 - interiorRight
+4 - interiorSingle
+5 - grassMiddle
+6 - grassLeft
+7 - grassRight
+8 - grassSingle
+9 - cave
+10 - caveTop
+11 - caveBottom
+12 - caveLeft
+13 - caveRight
+14 - damageBlock
+15 - goalBlock

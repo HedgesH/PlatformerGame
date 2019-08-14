@@ -12,6 +12,7 @@ public class Block extends Rectangle {
     public static final int WIDTH = 128;
     public static final int HEIGHT = 128;
     public static final int DAMAGE_BLOCK_ID = 14;
+    public static final int GOAL_BLOCK_ID = 15;
 
     //rand color
     public Color currentColor;
@@ -29,10 +30,16 @@ public class Block extends Rectangle {
     public void drawBlock(Graphics g){
         int xOff = (int)GameState.xOffset;
         int yOff = (int)GameState.yOffset;
+
         if(id == 14){
             currentColor = randColor(currentColor);
             g.setColor(currentColor);
             g.fillRect((int)x - xOff ,(int)y - yOff ,WIDTH,HEIGHT);
+        }
+        else if(id == 15){
+            g.setColor(new Color(255, 252,0));
+            g.fillRect((int)x - xOff ,(int)y - yOff ,WIDTH,HEIGHT);
+
         }
         else if(id != 0 ){
             g.drawImage(Images.blocks[id-1],(int)x - xOff ,(int)y - yOff ,WIDTH,HEIGHT,null);
@@ -41,6 +48,10 @@ public class Block extends Rectangle {
 
     public boolean isDamageBlock(){
         return (id == DAMAGE_BLOCK_ID);
+    }
+
+    public boolean isGoalBlock(){
+        return (id == GOAL_BLOCK_ID);
     }
 
     public Color randColor (Color color){

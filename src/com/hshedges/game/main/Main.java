@@ -24,11 +24,7 @@ public class Main  {
 
     }
 
-    //TODO: 3 levels
-    //TODO: level complete
-    //TODO: Goal block
     //TODO: design UI
-    //TODO: more backgrounds
     //TODO: stops running when lands
     //TODO: sound
     //TODO: put on android app store

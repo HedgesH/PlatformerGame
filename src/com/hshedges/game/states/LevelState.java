@@ -13,21 +13,31 @@ import java.awt.event.KeyEvent;
 
 public class LevelState extends GameState {
 
+    private static final String[] levelPath = {"/maps/lvl1.map","/maps/lvl2.map","/maps/lvl3.map"};
+
     private Player player;
     private Block[][] blocks;
     private Map map;
     private Lives lives;
     private Timer timer;
+    private int levelCount;
+
+    //level complete
+    public static final int FONT_SIZE = 72;
+    public static final int TARGET_TIME = 5000;
+    private long counter;
+
 
     public LevelState(GameStateManager gsm){
         super(gsm);
+        this.levelCount = 0;
 
 
     }
 
     @Override
     public void init() {
-        this.map = new Map("/maps/lvl1.map",4,4);
+        this.map = new Map(levelPath[levelCount],4,4);
         player = new Player(64,64,map);
         GameState.yOffset = -GamePanel.HEIGHT/2 - 128;
         GameState.xOffset = -GamePanel.WIDTH/2 + 128;
@@ -42,13 +52,24 @@ public class LevelState extends GameState {
 
     @Override
     public void tick() {
-        player.tick(map.blocks,map.movingBlocks);
-        map.tick();
-        lives.tick(player.lives);
-        timer.tick();
 
-        //TODO: splash screen for death
-        if(player.lives == 0) gsm.states.pop();
+        if(!player.levelComplete){
+            player.tick(map.blocks,map.movingBlocks);
+            map.tick();
+            lives.tick(player.lives);
+            timer.tick();
+            //TODO: splash screen for death
+            if(player.lives == 0) gsm.states.pop();
+            counter = System.nanoTime();
+        }
+        else{
+            long time = System.nanoTime();
+            if((time - counter) / 1_000_000 > 5000){
+                levelCount++;
+                if (levelCount >= levelPath.length) gsm.states.pop();
+                else init();
+            }
+        }
 
     }
 
@@ -61,6 +82,10 @@ public class LevelState extends GameState {
         player.drawPlayer(g);
         lives.drawLives(g);
         timer.drawTimer(g);
+        if(player.levelComplete){
+            g.setFont(new Font("Garamond",Font.BOLD,FONT_SIZE));
+            g.drawString("Level Complete", GamePanel.WIDTH/8 - (FONT_SIZE), GamePanel.HEIGHT/2);
+        }
 
     }
 
@@ -74,6 +99,13 @@ public class LevelState extends GameState {
     @Override
     public void keyReleased(int k) {
         player.keyReleased(k);
+
+    }
+
+    public void levelComplete(){
+
+
+
 
     }
 }
