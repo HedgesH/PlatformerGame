@@ -24,10 +24,6 @@ public class Main  {
 
     }
 
-    //TODO: enemy block
-    //TODO: losing health
-    //TODO: out of bounds
-    //TODO: add 0 to front of digit
     //TODO: 3 levels
     //TODO: level complete
     //TODO: Goal block

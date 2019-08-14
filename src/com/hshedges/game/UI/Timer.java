@@ -46,8 +46,13 @@ public class Timer {
 
     public void drawTimer(Graphics g){
         int[] time = getTime();
+        String[] timeStr = new String[3];
+        for (int i = 0; i < 3 ; i++) {
+            if(time[i] < 10) timeStr[i] = "0" + time[i];
+            else timeStr[i] = Integer.toString(time[i]);
+        }
 
-        String timeString = time[0]  + ":"  + time[1] + ":" + time[2] ;
+        String timeString = timeStr[0]  + ":"  + timeStr[1] + ":" + timeStr[2] ;
         g.setColor(Color.WHITE);
         g.setFont(new Font("Garamond",Font.BOLD,FONT_SIZE));
         g.drawString(timeString, x + (FONT_SIZE/3),y + (FONT_SIZE/3)   );

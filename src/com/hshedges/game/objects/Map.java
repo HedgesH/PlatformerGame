@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 public class Map {
 
     private String path;
-    private int height,width,movingbs;
+    public int height,width,movingbs;
 
     public Block[][] blocks;
     public MovingBlock[] movingBlocks;

@@ -27,12 +27,12 @@ public class LevelState extends GameState {
 
     @Override
     public void init() {
-        player = new Player(64,64);
         this.map = new Map("/maps/lvl1.map",4,4);
+        player = new Player(64,64,map);
         GameState.yOffset = -GamePanel.HEIGHT/2 - 128;
         GameState.xOffset = -GamePanel.WIDTH/2 + 128;
         lives = new Lives(GamePanel.WIDTH/32,GamePanel.HEIGHT/16,GamePanel.WIDTH/40,GamePanel.WIDTH/40,player.lives);
-        timer = new Timer(GamePanel.WIDTH/32,GamePanel.HEIGHT/32);
+        timer = new Timer(GamePanel.WIDTH/64,GamePanel.HEIGHT/32);
 
 
 

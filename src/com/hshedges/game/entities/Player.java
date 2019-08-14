@@ -3,6 +3,7 @@ package com.hshedges.game.entities;
 import com.hshedges.game.main.GamePanel;
 import com.hshedges.game.main.Images;
 import com.hshedges.game.objects.Block;
+import com.hshedges.game.objects.Map;
 import com.hshedges.game.objects.MovingBlock;
 import com.hshedges.game.physics.Collisions;
 import com.hshedges.game.states.GameState;
@@ -43,8 +44,11 @@ public class Player extends Rectangle {
     public static final int START_LIVES = 3;
     public int lives;
 
+    //map
+    Map map;
 
-    public Player(int w ,int h){
+
+    public Player(int w ,int h, Map map){
         setBounds(GamePanel.WIDTH/2 + 15,GamePanel.HEIGHT/2 + 8,width - 28,height - 10);
         this.posX = GamePanel.WIDTH/2;
         this.posY = GamePanel.HEIGHT/2;
@@ -61,6 +65,7 @@ public class Player extends Rectangle {
         this.noright = false;
         this.damaged = false;
         this.lives = START_LIVES;
+        this.map = map;
     }
 
 
@@ -131,6 +136,10 @@ public class Player extends Rectangle {
             animate();
             start = time;
         }
+
+
+        //out of bounds
+        outOfBounds();
 
 
 
@@ -297,5 +306,12 @@ public class Player extends Rectangle {
     public void damage(){
         if(lives != 0) lives--;
         damaged = false;
+    }
+
+    public void outOfBounds(){
+
+        if(GameState.yOffset > map.height * Block.HEIGHT + GamePanel.HEIGHT) damaged = true;
+        if(GameState.xOffset > map.width * Block.WIDTH + GamePanel.WIDTH) damaged = true;
+        if(GameState.xOffset < -GamePanel.WIDTH) damaged = true;
     }
 }
