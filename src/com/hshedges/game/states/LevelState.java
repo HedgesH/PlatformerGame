@@ -31,7 +31,7 @@ public class LevelState extends GameState {
         this.map = new Map("/maps/lvl1.map",4,4);
         GameState.yOffset = -GamePanel.HEIGHT/2 - 128;
         GameState.xOffset = -GamePanel.WIDTH/2 + 128;
-        lives = new Lives(GamePanel.WIDTH/32,GamePanel.HEIGHT/16,GamePanel.WIDTH/40,GamePanel.WIDTH/40);
+        lives = new Lives(GamePanel.WIDTH/32,GamePanel.HEIGHT/16,GamePanel.WIDTH/40,GamePanel.WIDTH/40,player.lives);
         timer = new Timer(GamePanel.WIDTH/32,GamePanel.HEIGHT/32);
 
 
@@ -44,8 +44,11 @@ public class LevelState extends GameState {
     public void tick() {
         player.tick(map.blocks,map.movingBlocks);
         map.tick();
-        lives.tick(false);
+        lives.tick(player.lives);
         timer.tick();
+
+        //TODO: splash screen for death
+        if(player.lives == 0) gsm.states.pop();
 
     }
 

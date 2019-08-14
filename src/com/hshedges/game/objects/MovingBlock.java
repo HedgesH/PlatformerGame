@@ -20,7 +20,7 @@ public class MovingBlock extends Block {
         this.currentSpeed = SPEED;
         this.offset = false;
 
-        System.out.println(startX + " " + finalX);
+        //System.out.println(startX + " " + finalX);
 
 
 

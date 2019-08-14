@@ -11,8 +11,8 @@ public class Lives {
     double seperation;
 
 
-    public Lives(int x, int y, int width, int height){
-        lives = 3;
+    public Lives(int x, int y, int width, int height, int lives){
+        this.lives = lives;
         this.x = x;
         this.y = y;
         this.width = width;
@@ -22,9 +22,7 @@ public class Lives {
 
     }
 
-    public void tick(boolean dead){
-        if(dead) lives--;
-    }
+    public void tick(int lives){ this.lives = lives; }
 
     public void drawLives(Graphics g){
 

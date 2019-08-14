@@ -38,6 +38,11 @@ public class Player extends Rectangle {
     private static final int targetTime = 1000/FPS;
     private long start;
 
+    //damage
+    public boolean damaged;
+    public static final int START_LIVES = 3;
+    public int lives;
+
 
     public Player(int w ,int h){
         setBounds(GamePanel.WIDTH/2 + 15,GamePanel.HEIGHT/2 + 8,width - 28,height - 10);
@@ -54,10 +59,29 @@ public class Player extends Rectangle {
         this.start = System.nanoTime();
         this.noleft = false;
         this.noright = false;
+        this.damaged = false;
+        this.lives = START_LIVES;
     }
 
 
-    public void tick(Block[][] blocks,MovingBlock[] mblocks) {
+
+    public void tick(Block[][] blocks,MovingBlock[] mblocks){
+        if(damaged){ damageTick(); }
+        else normalTick(blocks,mblocks);
+    }
+
+    public void damageTick(){
+        posY += GRAVITY * 30;
+        if(posY > GamePanel.HEIGHT){
+            posY = GamePanel.HEIGHT/2;
+            GameState.yOffset = -GamePanel.HEIGHT/2 - 128;
+            GameState.xOffset = -GamePanel.WIDTH/2 + 128;
+            damage();
+
+        }
+    }
+
+    public void normalTick(Block[][] blocks,MovingBlock[] mblocks) {
 
         if(jumping || falling){
             GameState.yOffset += currentJumpSpeed;
@@ -78,8 +102,10 @@ public class Player extends Rectangle {
 
                 Block b = blocks[i][j];
                 collideCounter += playerCollision(b,false);
+                if(damaged) break;
 
             }
+            if(damaged) break;
 
         }
         boolean collisions = false;
@@ -93,6 +119,8 @@ public class Player extends Rectangle {
             }
             else b.currentSpeed = SPEED;
 
+            if(damaged) break;
+
 
         }
 
@@ -103,7 +131,6 @@ public class Player extends Rectangle {
             animate();
             start = time;
         }
-
 
 
 
@@ -139,10 +166,11 @@ public class Player extends Rectangle {
             rightPos = posX + 15 + width - 28 + (int)GameState.xOffset;
 
 
-
             if(b instanceof MovingBlock){
                 if(!collision) GameState.xOffset -= 1;
             }
+
+            if(b.isDamageBlock()) damaged = true;
         }
         //left
         if(Collisions.playerBlock2(leftPos -ec, upPos + ec,b)
@@ -155,6 +183,8 @@ public class Player extends Rectangle {
             if(b instanceof MovingBlock){
                 if(!collision) GameState.xOffset += 1;
             }
+
+            if(b.isDamageBlock()) damaged = true;
         }
 
         //up
@@ -170,6 +200,8 @@ public class Player extends Rectangle {
             if(b instanceof MovingBlock){
                 if(!collision) GameState.yOffset += 1;
             }
+
+            if(b.isDamageBlock()) damaged = true;
 
         }
         //down
@@ -187,6 +219,8 @@ public class Player extends Rectangle {
                 //if(!collision) GameState.yOffset -= 1;
                 ((MovingBlock) b).offset = true;
             }
+
+            if(b.isDamageBlock()) damaged = true;
 
         }
         else{
@@ -213,13 +247,11 @@ public class Player extends Rectangle {
 //        g.setColor(new Color(0,0,0));
 //        g.drawRect(GamePanel.WIDTH/2 + 15,GamePanel.HEIGHT/2 + 8,width - 28,height - 10);
 
-        if(right){
-            g.drawImage(Images.playerRunRight[aniStage],GamePanel.WIDTH/2,GamePanel.HEIGHT/2,width,height,null);
-        }
-        else if(left){
-            g.drawImage(Images.playerRunLeft[aniStage],GamePanel.WIDTH/2,GamePanel.HEIGHT/2,width,height,null);
-        }
-        else g.drawImage(Images.playerIdle,GamePanel.WIDTH/2,GamePanel.HEIGHT/2,width,height,null);
+        //TODO: injured animation
+        if(damaged) g.drawImage(Images.playerIdle,posX,posY,width,height,null);
+        else if(right){ g.drawImage(Images.playerRunRight[aniStage],posX,posY,width,height,null); }
+        else if(left){ g.drawImage(Images.playerRunLeft[aniStage],posX,posY,width,height,null); }
+        else g.drawImage(Images.playerIdle,posX,posY,width,height,null);
 
     }
 
@@ -260,5 +292,10 @@ public class Player extends Rectangle {
             aniStage = (aniStage + 1) % 6;
         }
         else aniStage = 0;
+    }
+
+    public void damage(){
+        if(lives != 0) lives--;
+        damaged = false;
     }
 }

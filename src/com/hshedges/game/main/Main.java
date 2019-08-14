@@ -25,12 +25,16 @@ public class Main  {
     }
 
     //TODO: enemy block
+    //TODO: losing health
+    //TODO: out of bounds
+    //TODO: add 0 to front of digit
     //TODO: 3 levels
     //TODO: level complete
     //TODO: Goal block
     //TODO: design UI
     //TODO: more backgrounds
     //TODO: stops running when lands
-    //TODO: put on app store
+    //TODO: sound
+    //TODO: put on android app store
 
 }

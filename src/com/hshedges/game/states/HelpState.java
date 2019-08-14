@@ -9,7 +9,6 @@ public class HelpState extends GameState {
 
     public HelpState(GameStateManager gsm){
         super(gsm);
-        System.out.println("here");
     }
 
     @Override

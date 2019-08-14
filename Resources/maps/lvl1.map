@@ -1,15 +1,19 @@
 20
 4
 1
-8 10 10 10 10 10 8 10 6 5 5 5 5 5 5 5 5 5 5 7
+8 10 10 10 10 10 8 10 6 5 14 14 5 5 5 5 5 5 5 7
 2 7 9 9 9 9 9 9 2 3 9 9 9 9 9 9 9 9 9 13
 2 9 9 6 7 9 9 9 9 9 9 9 9 9 9 9 9 9 9 13
 0 6 5 1 1 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
 1 0 5 0 8
 
-row1 col1 row2 col2 id
-etc
 
+etc
+-- first line is width
+-- second line is height
+-- third line number of moving blocks
+-- input map
+-- next lines are the moving blocks two coordinates (row1 col1 row2 col2 id)
 
 0 - air
 1 - interior
